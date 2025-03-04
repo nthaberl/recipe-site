@@ -1,0 +1,56 @@
+import React, { useState } from 'react';
+
+const RecipeSearch = () => {
+    const [query, setQuery] = useState('');
+    const [recipes, setRecipes] = useState([]);
+    const [error, setError] = useState(null);
+
+    // const API_KEY = process.env.API_KEY; // Use environment variable
+
+    const searchRecipes = async (e) => {
+        e.preventDefault();
+        setError(null);
+
+        try {
+            const response = await fetch(
+                `https://api.spoonacular.com/recipes/complexSearch?query=${query}&number=10&apiKey=5186f95df1f54789af41090471577ea4`
+                // `https://api.spoonacular.com/recipes/complexSearch?query=${query}&number=10&apiKey=${API_KEY}`
+            );
+            if (!response.ok) throw new Error('Failed to fetch recipes');
+
+            const data = await response.json();
+            setRecipes(data.results);
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    return (
+        <div>
+            <h2>Search Recipes</h2>
+            <form onSubmit={searchRecipes}>
+                <input
+                    type="text"
+                    placeholder="Search for a recipe..."
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    required
+                />
+                <button type="submit">Search</button>
+            </form>
+
+            {error && <p className="error-message">{error}</p>}
+
+            <div className="recipe-results">
+                {recipes.length > 0 && recipes.map((recipe) => (
+                    <div key={recipe.id} className="recipe-item">
+                        <h3>{recipe.title}</h3>
+                        <img src={recipe.image} alt={recipe.title} />
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default RecipeSearch;
