@@ -19,7 +19,7 @@ const AuthForm = () => {
             } else {
                 await signup(email, password);
             }
-            navigate('/recipes'); // Redirect to the recipe list after login/register
+            navigate('/home'); // Redirect to the recipe list after login/register
         } catch (err) {
             setError(isLogin ? 'Failed to log in' : 'Failed to create an account');
         }

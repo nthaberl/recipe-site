@@ -7,10 +7,10 @@ const Navbar = () => {
 
     return (
         <nav>
-            <Link to="/recipes">Recipes</Link>
+            <Link to="/home">Collection</Link>
+            <Link to="/search">Search Recipes</Link>
             {currentUser ? (
                 <>
-                    <span>Welcome!</span>
                     <button onClick={logout}>Logout</button>
                 </>
             ) : (

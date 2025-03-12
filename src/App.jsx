@@ -1,9 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import Navbar from './components/Navbar';
 import AuthForm from './components/AuthForm';
 import RecipeHome from './components/RecipeHome';
+import RecipeDetails from './components/RecipeDetail';
+import RecipeSearch from './components/RecipeSearch';
 
 const App = () => {
   return (
@@ -12,15 +13,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Navigate to="/auth" />} />
           <Route path="/auth" element={<AuthForm />} />
-          <Route
-            path="/recipes"
-            element={
-              <ProtectedRoute>
-                <RecipeHome />
-              </ProtectedRoute>
-            }
-          />
-
+          <Route path="/home" element={<ProtectedRoute><RecipeHome /></ProtectedRoute>} />
+          <Route path="/search" element={<ProtectedRoute><RecipeSearch /></ProtectedRoute>} />
+          <Route path="/search/:id" element={<ProtectedRoute><RecipeDetails /></ProtectedRoute>} />
           {/* later implement a 404 here */}
           {/* <Route path="*" element={<Navigate to="/auth" />} /> */}
         </Routes>

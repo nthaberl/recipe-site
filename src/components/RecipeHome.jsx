@@ -1,14 +1,16 @@
 import React from 'react';
-import RecipeSearch from './RecipeSearch';
+import Navbar from './Navbar';
 
 const RecipeHome = () => {
 
 
     return (
+        <>
+        <Navbar />
         <div>
-            <h1>Recipe Search</h1>
-            <RecipeSearch />
+            <h1>Recipe Collection</h1>
         </div>
+        </>
     );
 };
 

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const RecipeSearch = () => {
     const [query, setQuery] = useState('');
@@ -11,21 +13,27 @@ const RecipeSearch = () => {
         e.preventDefault();
         setError(null);
 
-        try {
-            const response = await fetch(
-                `https://api.spoonacular.com/recipes/complexSearch?query=${query}&number=10&apiKey=5186f95df1f54789af41090471577ea4`
-                // `https://api.spoonacular.com/recipes/complexSearch?query=${query}&number=10&apiKey=${API_KEY}`
-            );
-            if (!response.ok) throw new Error('Failed to fetch recipes');
-
-            const data = await response.json();
-            setRecipes(data.results);
-        } catch (err) {
-            setError(err.message);
-        }
+        fetch(
+            `https://api.spoonacular.com/recipes/complexSearch?query=${query}&number=10&apiKey=5186f95df1f54789af41090471577ea4`
+            // `https://api.spoonacular.com/recipes/complexSearch?query=${query}&number=10&apiKey=${API_KEY}`
+        )
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch recipes');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setRecipes(data.results);
+            })
+            .catch((err) => {
+                setError(err.message);
+            });
     };
 
     return (
+        <>
+        <Navbar />
         <div>
             <h2>Search Recipes</h2>
             <form onSubmit={searchRecipes}>
@@ -42,14 +50,17 @@ const RecipeSearch = () => {
             {error && <p className="error-message">{error}</p>}
 
             <div className="recipe-results">
-                {recipes.length > 0 && recipes.map((recipe) => (
-                    <div key={recipe.id} className="recipe-item">
+                {recipes.length > 0 && recipes.map((recipe, index) => (
+                    <div key={recipe.id ?? `recipe-${index}`} className="recipe-item">
                         <h3>{recipe.title}</h3>
-                        <img src={recipe.image} alt={recipe.title} />
+                        <Link to={`/search/${recipe.id}`}>
+                            <img src={recipe.image} alt={recipe.title} />
+                        </Link>
                     </div>
                 ))}
             </div>
         </div>
+        </>
     );
 };
 
