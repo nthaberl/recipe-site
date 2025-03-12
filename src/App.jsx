@@ -5,6 +5,7 @@ import AuthForm from './components/AuthForm';
 import RecipeHome from './components/RecipeHome';
 import RecipeDetails from './components/RecipeDetail';
 import RecipeSearch from './components/RecipeSearch';
+import SavedRecipeDetail from "./components/SavedRecipeDetail";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           <Route path="/" element={<Navigate to="/auth" />} />
           <Route path="/auth" element={<AuthForm />} />
           <Route path="/home" element={<ProtectedRoute><RecipeHome /></ProtectedRoute>} />
+          <Route path="/saved-recipe/:id" element={<SavedRecipeDetail />} />
           <Route path="/search" element={<ProtectedRoute><RecipeSearch /></ProtectedRoute>} />
           <Route path="/search/:id" element={<ProtectedRoute><RecipeDetails /></ProtectedRoute>} />
           {/* later implement a 404 here */}
