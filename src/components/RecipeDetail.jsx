@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from './Navbar';
-
 import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
@@ -23,6 +22,14 @@ const RecipeDetails = () => {
         return <p>Loading recipe details...</p>;
     }
 
+        // Parse instructions into an array of strings based on <li> tags
+        const parseInstructions = (instructions) => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(instructions, 'text/html');
+            const liElements = htmlDoc.querySelectorAll('li');
+            return Array.from(liElements).map(li => li.textContent);  // Extract text content of each <li>
+        };
+
     const saveRecipe = async () => {
         if (!currentUser) {
             alert("Please log in to save recipes.");
@@ -30,12 +37,15 @@ const RecipeDetails = () => {
         }
     
         try {
+            // Parse instructions into an array of strings before saving
+            const parsedInstructions = parseInstructions(recipe.instructions || "");
+
             await addDoc(collection(db, "users", currentUser.uid, "savedRecipes"), {
                 id: recipe.id,
                 title: recipe.title,
                 image: recipe.image,
                 ingredients: recipe.extendedIngredients.map(ing => ing.original),
-                instructions: recipe.instructions || "",
+                instructions: parsedInstructions,
                 notes: "",
                 createdAt: new Date(),
             });
@@ -59,7 +69,8 @@ const RecipeDetails = () => {
                     ))}
                 </ul>
                 <h2>Instructions:</h2>
-                <p dangerouslySetInnerHTML={{ __html: recipe.instructions }}></p>
+                {/* <p dangerouslySetInnerHTML={{ __html: recipe.instructions }}></p> */}
+                <p>{recipe.instructions}</p>
                 <button onClick={saveRecipe}>Save to Collection</button>
             </div>
         </>

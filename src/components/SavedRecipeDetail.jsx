@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, query, where, doc, getDocs, updateDoc } from "firebase/firestore";
+import { collection, query, where, doc, getDocs, updateDoc, deleteDoc } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 
 const SavedRecipeDetail = () => {
@@ -12,13 +12,15 @@ const SavedRecipeDetail = () => {
     const [recipe, setRecipe] = useState(null);
     const [newNotes, setNewNotes] = useState("");
     const [newIngredients, setNewIngredients] = useState([]);
-    const [newInstructions, setNewInstructions] = useState("");
+    const [newInstructions, setNewInstructions] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(true); // Loading state
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!currentUser || !id) return;
 
+        //retrieve recipe
         const fetchRecipe = async () => {
             try {
                 // Query Firestore for the recipe where the recipeId field matches the id from the URL
@@ -36,8 +38,8 @@ const SavedRecipeDetail = () => {
                         docId: recipeDoc.id,  // Store Firestore document ID separately
                     });
                     setNewNotes(data.notes || "");
-                    setNewInstructions(data.instructions || "");
-                    // Initialize newIngredients as an array of ingredient objects
+                    // Initialize newIngredients and newInstructions as as an array of strings
+                    setNewInstructions(data.instructions || []);
                     setNewIngredients(data.ingredients || []);
                 } else {
                     console.log('No recipe found!');
@@ -53,7 +55,7 @@ const SavedRecipeDetail = () => {
         fetchRecipe();
     }, [currentUser, id]);
 
-
+    //update recipe
     const saveEdits = async () => {
         if (!currentUser || !recipe) return;
 
@@ -77,10 +79,59 @@ const SavedRecipeDetail = () => {
         }
     };
 
+    //delete recipe
+    const deleteRecipe = async () => {
+        if (!currentUser || !recipe) return;
+
+        const confirmDelete = window.confirm("Are you sure you want to delete this recipe?");
+        if (!confirmDelete) return; //stop delete if user cancels
+
+        try {
+            const recipeRef = doc(db, "users", currentUser.uid, "savedRecipes", recipe.docId);
+            await deleteDoc(recipeRef); //delete recipe from db
+            // Redirect the user or update state as needed
+            navigate("/home");
+        } catch (error) {
+            console.error("Error deleting recipe:", error);
+        }
+    };
+
+
+    //add/edit/delete ingredients
     const handleIngredientChange = (index, value) => {
         const updatedIngredients = [...newIngredients];
         updatedIngredients[index] = value; // Update ingredient text
         setNewIngredients(updatedIngredients);
+    };
+
+    // Add a new ingredient
+    const addIngredient = () => {
+        setNewIngredients([...newIngredients, ""]);
+    };
+
+    // Delete an ingredient
+    const deleteIngredient = (index) => {
+        const updatedIngredients = newIngredients.filter((_, i) => i !== index);
+        setNewIngredients(updatedIngredients);
+    };
+
+    //add/edit/delete instructions
+
+    const handleInstructionChange = (index, value) => {
+        const updatedInstructions = [...newInstructions];
+        updatedInstructions[index] = value; // Update instruction text
+        setNewInstructions(updatedInstructions);
+    };
+
+    // Add a new instruction step
+    const addInstruction = () => {
+        setNewInstructions([...newInstructions, ""]);
+    };
+
+    // Delete an instruction step
+    const deleteInstruction = (index) => {
+        const updatedInstructions = newInstructions.filter((_, i) => i !== index);
+        setNewInstructions(updatedInstructions);
     };
 
     if (loading) return <p>Loading recipe...</p>;
@@ -97,15 +148,17 @@ const SavedRecipeDetail = () => {
                 {isEditing ? (
                     <div>
                         {newIngredients.map((ingredient, index) => (
-                            <div key={index}>
+                            <div key={index} style={{ display: "flex", alignItems: "center" }}>
                                 <input
                                     type="text"
                                     value={ingredient}
                                     onChange={(e) => handleIngredientChange(index, e.target.value)}
-                                    style={{ width: "100%", marginBottom: "5px" }}
+                                    style={{ width: "80%", marginRight: "10px" }}
                                 />
+                                <button onClick={() => deleteIngredient(index)}>Delete</button>
                             </div>
                         ))}
+                        <button onClick={addIngredient}>Add Ingredient</button>
                     </div>
                 ) : (
                     <ul>
@@ -115,12 +168,35 @@ const SavedRecipeDetail = () => {
                     </ul>
                 )}
 
+                <h3>Instructions:</h3>
                 {isEditing ? (
                     <div>
-                        <h4>Edit Instructions</h4>
-                        <textarea value={newInstructions} onChange={(e) => setNewInstructions(e.target.value)} />
+                        {/* Display instructions as a numbered list with editable fields */}
+                        {newInstructions.map((instruction, index) => (
+                            <div key={index}>
+                                <label>{index + 1}:</label>
+                                <input
+                                    type="text"
+                                    value={instruction}
+                                    onChange={(e) => handleInstructionChange(index, e.target.value)}
+                                    style={{ width: "100%", marginBottom: "5px" }}
+                                />
+                                <button onClick={() => deleteInstruction(index)}>Delete</button>
+                            </div>
+                        ))}
+                        <button onClick={addInstruction}>Add Step</button>
+                    </div>
+                ) : (
+                    <ol>
+                        {recipe.instructions && recipe.instructions.map((instruction, index) => (
+                            <li key={index}>{instruction}</li>
+                        ))}
+                    </ol>
+                )}
 
-                        <h4>Add Notes</h4>
+                {isEditing ? (
+                    <div>
+                        <h4>Edit Notes</h4>
                         <textarea value={newNotes} onChange={(e) => setNewNotes(e.target.value)} />
 
                         <button onClick={saveEdits}>Save</button>
@@ -128,12 +204,17 @@ const SavedRecipeDetail = () => {
                     </div>
                 ) : (
                     <div>
-                        <p><strong>Instructions:</strong> {recipe.instructions}</p>
                         <p><strong>Notes:</strong> {recipe.notes}</p>
+
                         <button onClick={() => setIsEditing(true)}>Edit Recipe</button>
+                        <button
+                            onClick={deleteRecipe}
+                            style={{ backgroundColor: "red", color: "white", marginLeft: "10px" }}>
+                            Delete Recipe
+                        </button>
                     </div>
                 )}
-            </div>
+            </div >
         </>
     );
 };
