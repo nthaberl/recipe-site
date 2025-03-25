@@ -32,7 +32,7 @@ const RecipeHome = () => {
         <>
             <Navbar />
             <div className="recipe-container">
-                <h2>Your Saved Recipes</h2>
+                <h2>Your Saved Noms</h2>
                 {savedRecipes.length === 0 ? (
                     <p>No saved recipes yet.</p>
                 ) : (
