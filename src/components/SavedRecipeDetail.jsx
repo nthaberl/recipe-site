@@ -140,7 +140,7 @@ const SavedRecipeDetail = () => {
     return (
         <>
             <Navbar />
-            <div>
+            <div className="recipe-detail-container">
                 <h2>{recipe.title}</h2>
                 <img src={recipe.image} alt={recipe.title} style={{ width: "300px" }} />
 
@@ -148,14 +148,13 @@ const SavedRecipeDetail = () => {
                 {isEditing ? (
                     <div>
                         {newIngredients.map((ingredient, index) => (
-                            <div key={index} style={{ display: "flex", alignItems: "center" }}>
+                            <div className="recipe-inputs" key={index}>
                                 <input
                                     type="text"
                                     value={ingredient}
                                     onChange={(e) => handleIngredientChange(index, e.target.value)}
-                                    style={{ width: "80%", marginRight: "10px" }}
                                 />
-                                <button onClick={() => deleteIngredient(index)}>Delete</button>
+                                <button onClick={() => deleteIngredient(index)}>x</button>
                             </div>
                         ))}
                         <button onClick={addIngredient}>Add Ingredient</button>
@@ -173,15 +172,14 @@ const SavedRecipeDetail = () => {
                     <div>
                         {/* Display instructions as a numbered list with editable fields */}
                         {newInstructions.map((instruction, index) => (
-                            <div key={index}>
+                            <div className="recipe-inputs" key={index}>
                                 <label>{index + 1}:</label>
                                 <input
                                     type="text"
                                     value={instruction}
                                     onChange={(e) => handleInstructionChange(index, e.target.value)}
-                                    style={{ width: "100%", marginBottom: "5px" }}
                                 />
-                                <button onClick={() => deleteInstruction(index)}>Delete</button>
+                                <button onClick={() => deleteInstruction(index)}> X </button>
                             </div>
                         ))}
                         <button onClick={addInstruction}>Add Step</button>
@@ -195,13 +193,18 @@ const SavedRecipeDetail = () => {
                 )}
 
                 {isEditing ? (
-                    <div>
-                        <h4>Edit Notes</h4>
-                        <textarea value={newNotes} onChange={(e) => setNewNotes(e.target.value)} />
+                    <>
+                        <div>
+                            <h4>Notes</h4>
+                            <textarea value={newNotes} rows="8" cols="50" onChange={(e) => setNewNotes(e.target.value)} />
 
-                        <button onClick={saveEdits}>Save</button>
-                        <button onClick={() => setIsEditing(false)}>Cancel</button>
-                    </div>
+                        </div>
+                        <div>
+
+                            <button onClick={saveEdits}>Save</button>
+                            <button onClick={() => setIsEditing(false)}>Cancel</button>
+                        </div>
+                    </>
                 ) : (
                     <div>
                         <p><strong>Notes:</strong> {recipe.notes}</p>

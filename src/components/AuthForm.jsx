@@ -21,34 +21,45 @@ const AuthForm = () => {
             }
             navigate('/home'); // Redirect to the recipe list after login/register
         } catch (err) {
-            setError(isLogin ? 'Failed to log in' : 'Failed to create an account');
+            //error message for when account already exists
+            if (err.code === 'auth/email-already-in-use') {
+                setError('Account already exists, please log in.')
+            } else {
+                setError(isLogin ? 'Failed to log in' : 'Failed to create an account');
+            }
         }
     };
 
     return (
-        <div className="auth-container">
-            <h2><span style ={{color: 'black'}}>{isLogin ? 'Login' : 'Register'}</span></h2>
-            {error && <p className="error-message">{error}</p>}
-            <form onSubmit={handleSubmit} className="auth-form">
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
-            </form>
-            <button className="toggle-btn" onClick={() => setIsLogin(!isLogin)}>
-                {isLogin ? 'Need an account? Register' : 'Already have an account? Login'}
-            </button>
+        <div className='auth-page'>
+            <div className="auth-container">
+                <div className="title">
+                    <h1>Welcome to nomDB</h1>
+                    <h2>your resource for finding and saving noms!</h2>
+                </div>
+                <h3>{isLogin ? 'Login' : 'Register'}</h3>
+                {error && <p className="error-message">{error}</p>}
+                <form onSubmit={handleSubmit} className="auth-form">
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
+                </form>
+                <button className="toggle-btn" onClick={() => setIsLogin(!isLogin)}>
+                    {isLogin ? 'Need an account? Register' : 'Already have an account? Login'}
+                </button>
+            </div>
         </div>
     );
 };

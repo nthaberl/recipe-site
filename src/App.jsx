@@ -6,6 +6,7 @@ import RecipeHome from './components/RecipeHome';
 import RecipeDetails from './components/RecipeDetail';
 import RecipeSearch from './components/RecipeSearch';
 import SavedRecipeDetail from "./components/SavedRecipeDetail";
+import PageNotFound from './components/PageNotFound';
 
 const App = () => {
   return (
@@ -18,8 +19,7 @@ const App = () => {
           <Route path="/saved-recipe/:id" element={<SavedRecipeDetail />} />
           <Route path="/search" element={<ProtectedRoute><RecipeSearch /></ProtectedRoute>} />
           <Route path="/search/:id" element={<ProtectedRoute><RecipeDetails /></ProtectedRoute>} />
-          {/* later implement a 404 here */}
-          {/* <Route path="*" element={<Navigate to="/auth" />} /> */}
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>
     </AuthProvider>

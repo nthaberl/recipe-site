@@ -31,7 +31,7 @@ const RecipeHome = () => {
     return (
         <>
             <Navbar />
-            <div>
+            <div className="recipe-container">
                 <h2>Your Saved Recipes</h2>
                 {savedRecipes.length === 0 ? (
                     <p>No saved recipes yet.</p>
@@ -41,7 +41,7 @@ const RecipeHome = () => {
                             <div key={recipe.id} className="recipe-item">
                                 <h3>{recipe.title}</h3>
                                 <Link to={`/saved-recipe/${recipe.id}`}>
-                                    <img src={recipe.image} alt={recipe.title} style={{ width: "200px" }} />
+                                    <img src={recipe.image} alt={recipe.title} />
                                 </Link>
                             </div>
                         ))}

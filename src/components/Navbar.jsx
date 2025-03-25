@@ -7,7 +7,8 @@ const Navbar = () => {
 
     return (
         <nav>
-            <Link to="/home">Collection</Link>
+            <div><h1>nomDB</h1><h5>your personal nom database</h5></div>
+            <Link to="/home">Home</Link>
             <Link to="/search">Search Recipes</Link>
             {currentUser ? (
                 <>
