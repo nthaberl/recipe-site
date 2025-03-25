@@ -7,6 +7,7 @@ import RecipeDetails from './components/RecipeDetail';
 import RecipeSearch from './components/RecipeSearch';
 import SavedRecipeDetail from "./components/SavedRecipeDetail";
 import PageNotFound from './components/PageNotFound';
+import MainLayout from './layout/MainLayout';
 
 const App = () => {
   return (
@@ -15,10 +16,14 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Navigate to="/auth" />} />
           <Route path="/auth" element={<AuthForm />} />
-          <Route path="/home" element={<ProtectedRoute><RecipeHome /></ProtectedRoute>} />
-          <Route path="/saved-recipe/:id" element={<SavedRecipeDetail />} />
-          <Route path="/search" element={<ProtectedRoute><RecipeSearch /></ProtectedRoute>} />
-          <Route path="/search/:id" element={<ProtectedRoute><RecipeDetails /></ProtectedRoute>} />
+
+          <Route element={<MainLayout />}>
+            <Route path="/home" element={<ProtectedRoute><RecipeHome /></ProtectedRoute>} />
+            <Route path="/search" element={<ProtectedRoute><RecipeSearch /></ProtectedRoute>} />
+            <Route path="/search/:id" element={<ProtectedRoute><RecipeDetails /></ProtectedRoute>} />
+            <Route path="/saved-recipe/:id" element={<ProtectedRoute><SavedRecipeDetail /></ProtectedRoute>} />
+          </Route>
+          
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>

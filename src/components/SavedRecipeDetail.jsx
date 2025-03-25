@@ -3,7 +3,6 @@ import { db } from "../firebase";
 import { collection, query, where, doc, getDocs, updateDoc, deleteDoc } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
 
 const SavedRecipeDetail = () => {
     const { currentUser } = useAuth();
@@ -139,10 +138,9 @@ const SavedRecipeDetail = () => {
 
     return (
         <>
-            <Navbar />
             <div className="recipe-detail-container">
                 <h2>{recipe.title}</h2>
-                <img src={recipe.image} alt={recipe.title} style={{ width: "300px" }} />
+                <img src={recipe.image} alt={`Image of ${recipe.title}`} />
 
                 <h3>Ingredients:</h3>
                 {isEditing ? (
@@ -154,7 +152,7 @@ const SavedRecipeDetail = () => {
                                     value={ingredient}
                                     onChange={(e) => handleIngredientChange(index, e.target.value)}
                                 />
-                                <button onClick={() => deleteIngredient(index)}>x</button>
+                                <button onClick={() => deleteIngredient(index)} aria-label="remove ingredient">x</button>
                             </div>
                         ))}
                         <button onClick={addIngredient}>Add Ingredient</button>
@@ -179,7 +177,7 @@ const SavedRecipeDetail = () => {
                                     value={instruction}
                                     onChange={(e) => handleInstructionChange(index, e.target.value)}
                                 />
-                                <button onClick={() => deleteInstruction(index)}> X </button>
+                                <button onClick={() => deleteInstruction(index)} aria-label="remove recipe step"> X </button>
                             </div>
                         ))}
                         <button onClick={addInstruction}>Add Step</button>

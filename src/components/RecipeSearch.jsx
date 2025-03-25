@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Navbar from './Navbar';
 
 const RecipeSearch = () => {
 
@@ -40,7 +39,6 @@ const RecipeSearch = () => {
 
         fetch(
             `https://api.spoonacular.com/recipes/complexSearch?query=${query}&number=10&apiKey=5186f95df1f54789af41090471577ea4`
-            // `https://api.spoonacular.com/recipes/complexSearch?query=${query}&number=10&apiKey=${API_KEY}`
         )
             .then((response) => {
                 if (!response.ok) {
@@ -67,8 +65,6 @@ const RecipeSearch = () => {
 
     return (
         <>
-
-            <Navbar />
             <div className='recipe-container'>
                 <h2>Search Recipes</h2>
                 <form onSubmit={searchRecipes}>
@@ -78,6 +74,7 @@ const RecipeSearch = () => {
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         required
+                        aria-label="Search for recipes"
                     />
                     <button type="submit">Search</button>
                 </form>
@@ -85,11 +82,11 @@ const RecipeSearch = () => {
                 {error && <p className="error-message">{error}</p>}
 
                 {/* message while waiting for results */}
-                {searched && loading && <p>Searching for noms</p>}
+                {searched && loading && <p aria-live="polite">Searching for noms</p>}
 
                 {/* Only shows if search terms result in no recipes */}
                 {searched && recipes.length === 0 && !error && !loading && (
-                    <p className="no-results">Sorry, no recipes found. Please try searching for something else.</p>
+                    <p aria-live="polite">Sorry, no recipes found. Please try searching for something else.</p>
                 )}
 
 
@@ -98,7 +95,7 @@ const RecipeSearch = () => {
                         {recipes.map((recipe, index) => (
                             <div key={recipe.id ?? `recipe-${index}`} className="recipe-item">
                                 <h3>{recipe.title}</h3>
-                                <Link to={`/search/${recipe.id}`}>
+                                <Link to={`/search/${recipe.id}`} aria-label={`View details for ${recipe.title}`}>
                                     <img src={recipe.image} alt={recipe.title} />
                                 </Link>
                             </div>

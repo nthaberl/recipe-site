@@ -3,7 +3,7 @@ import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import Navbar from "./Navbar";
+
 
 const RecipeHome = () => {
     const { currentUser } = useAuth();
@@ -30,7 +30,6 @@ const RecipeHome = () => {
 
     return (
         <>
-            <Navbar />
             <div className="recipe-container">
                 <h2>Your Saved Noms</h2>
                 {savedRecipes.length === 0 ? (
@@ -40,7 +39,7 @@ const RecipeHome = () => {
                         {savedRecipes.map(recipe => (
                             <div key={recipe.id} className="recipe-item">
                                 <h3>{recipe.title}</h3>
-                                <Link to={`/saved-recipe/${recipe.id}`}>
+                                <Link to={`/saved-recipe/${recipe.id}`} aria-label={`View details for ${recipe.title}`}>
                                     <img src={recipe.image} alt={recipe.title} />
                                 </Link>
                             </div>

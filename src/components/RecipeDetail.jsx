@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Navbar from './Navbar';
 import { db } from "../firebase";
 import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
@@ -89,11 +88,9 @@ const RecipeDetails = () => {
 
     return (
         <>
-            <Navbar />
             <div className="unsaved-recipe-detail-container">
                 <h1>{recipe.title}</h1>
                 <img src={recipe.image} alt={recipe.title}/>
-                {/*  style={{ width: '100%', maxWidth: '500px' }}  */}
                 <h2>Ingredients:</h2>
                 <ul>
                     {recipe.extendedIngredients.map((ingredient) => (
@@ -107,7 +104,7 @@ const RecipeDetails = () => {
                         <li key={index}>{instruction}</li>
                     ))}
                 </ol>
-                <button onClick={saveRecipe}>Save to Collection</button>
+                <button onClick={saveRecipe} aria-label="Save this recipe to your collection">Save nom</button>
             </div>
         </>
     );

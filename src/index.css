@@ -48,6 +48,10 @@ h1 {
   line-height: 1.1;
 }
 
+.activenav {
+  color: #f07878;
+}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -287,6 +291,10 @@ nav a {
   background-color: rgba(255, 255, 255, 0.8); /* fix color */
 }
 
+.recipe-detail-container > img {
+    width: 300px; 
+}
+
 .edit-buttons {
   display: flex;
   flex-direction: row;
@@ -316,6 +324,10 @@ nav a {
   gap: 20px;
   margin-top: 20px;
   background-color: rgba(255, 255, 255, 0.8); /* fix color */
+}
+
+.unsaved-recipe-detail-container > img {
+  width: 400px;
 }
 
 /* Responsive Media displays */
