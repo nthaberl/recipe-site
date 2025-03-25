@@ -9,7 +9,7 @@
         // Only redirect if not already redirected
         if (!window.location.search.includes("redirect=true")) {
             window.location.replace(
-                "/recipe-site/" + window.location.pathname.substring(1) + "?redirect=true"
+                "/" + window.location.pathname.substring(1) + "?redirect=true"
             );
         }
     </script>
