@@ -138,84 +138,94 @@ const SavedRecipeDetail = () => {
 
     return (
         <>
-            <div className="recipe-detail-container">
+            <section className="recipe-detail-container">
                 <h2>{recipe.title}</h2>
                 <img src={recipe.image} alt={`Image of ${recipe.title}`} />
 
-                <h3>Ingredients:</h3>
-                {isEditing ? (
-                    <div>
-                        {newIngredients.map((ingredient, index) => (
-                            <div className="recipe-inputs" key={index}>
-                                <input
-                                    type="text"
-                                    value={ingredient}
-                                    onChange={(e) => handleIngredientChange(index, e.target.value)}
-                                />
-                                <button onClick={() => deleteIngredient(index)} aria-label="remove ingredient">x</button>
-                            </div>
-                        ))}
-                        <button onClick={addIngredient}>Add Ingredient</button>
-                    </div>
-                ) : (
-                    <ul>
-                        {recipe.ingredients && recipe.ingredients.map((ingredient, index) => (
-                            <li key={index}>{ingredient}</li>
-                        ))}
-                    </ul>
-                )}
-
-                <h3>Instructions:</h3>
-                {isEditing ? (
-                    <div>
-                        {/* Display instructions as a numbered list with editable fields */}
-                        {newInstructions.map((instruction, index) => (
-                            <div className="recipe-inputs" key={index}>
-                                <label>{index + 1}:</label>
-                                <input
-                                    type="text"
-                                    value={instruction}
-                                    onChange={(e) => handleInstructionChange(index, e.target.value)}
-                                />
-                                <button onClick={() => deleteInstruction(index)} aria-label="remove recipe step"> X </button>
-                            </div>
-                        ))}
-                        <button onClick={addInstruction}>Add Step</button>
-                    </div>
-                ) : (
-                    <ol>
-                        {recipe.instructions && recipe.instructions.map((instruction, index) => (
-                            <li key={index}>{instruction}</li>
-                        ))}
-                    </ol>
-                )}
-
-                {isEditing ? (
-                    <>
+                <section aria-labelledby="ingredients">
+                    <h3>Ingredients:</h3>
+                    {isEditing ? (
                         <div>
-                            <h4>Notes</h4>
-                            <textarea value={newNotes} rows="8" cols="50" onChange={(e) => setNewNotes(e.target.value)} />
-
+                            {newIngredients.map((ingredient, index) => (
+                                <div className="recipe-inputs" key={index}>
+                                    <input
+                                        type="text"
+                                        value={ingredient}
+                                        onChange={(e) => handleIngredientChange(index, e.target.value)}
+                                    />
+                                    <button onClick={() => deleteIngredient(index)} aria-label="remove ingredient">x</button>
+                                </div>
+                            ))}
+                            <button onClick={addIngredient}>Add Ingredient</button>
                         </div>
+                    ) : (
+                        <ul>
+                            {recipe.ingredients && recipe.ingredients.map((ingredient, index) => (
+                                <li key={index}>{ingredient}</li>
+                            ))}
+                        </ul>
+                    )}
+                </section>
+
+                <section aria-labelledby="instructions">
+                    <h3>Instructions:</h3>
+                    {isEditing ? (
                         <div>
-
-                            <button onClick={saveEdits}>Save</button>
-                            <button onClick={() => setIsEditing(false)}>Cancel</button>
+                            {/* Display instructions as a numbered list with editable fields */}
+                            {newInstructions.map((instruction, index) => (
+                                <div className="recipe-inputs" key={index}>
+                                    <label>{index + 1}:</label>
+                                    <input
+                                        type="text"
+                                        value={instruction}
+                                        onChange={(e) => handleInstructionChange(index, e.target.value)}
+                                    />
+                                    <button onClick={() => deleteInstruction(index)} aria-label="remove recipe step"> X </button>
+                                </div>
+                            ))}
+                            <button onClick={addInstruction}>Add Step</button>
                         </div>
-                    </>
-                ) : (
-                    <div>
-                        <p><strong>Notes:</strong> {recipe.notes}</p>
+                    ) : (
+                        <ol>
+                            {recipe.instructions && recipe.instructions.map((instruction, index) => (
+                                <li key={index}>{instruction}</li>
+                            ))}
+                        </ol>
+                    )}
+                </section>
 
-                        <button onClick={() => setIsEditing(true)}>Edit Recipe</button>
-                        <button
-                            onClick={deleteRecipe}
-                            style={{ backgroundColor: "red", color: "white", marginLeft: "10px" }}>
-                            Delete Recipe
-                        </button>
-                    </div>
-                )}
-            </div >
+                <section aria-labelledby="notes">
+                    {isEditing ? (
+                        <>
+                        <h4>Notes</h4>
+                            <div>
+                                <textarea
+                                    value={newNotes}
+                                    rows="8"
+                                    cols="50"
+                                    onChange={(e) => setNewNotes(e.target.value)}
+                                    aria-label="Edit recipe notes"
+                                />
+                            </div>
+                            <div>
+                                <button onClick={saveEdits}>Save</button>
+                                <button onClick={() => setIsEditing(false)}>Cancel</button>
+                            </div>
+                        </>
+                    ) : (
+                        <div>
+                            <p><strong>Notes:</strong> {recipe.notes}</p>
+
+                            <button onClick={() => setIsEditing(true)}>Edit Recipe</button>
+                            <button
+                                onClick={deleteRecipe}
+                                style={{ backgroundColor: "red", color: "white", marginLeft: "10px" }}>
+                                Delete Recipe
+                            </button>
+                        </div>
+                    )}
+                </section>
+            </section>
         </>
     );
 };

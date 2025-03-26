@@ -24,8 +24,9 @@ const RecipeDetails = () => {
     }
 
     /*
-    * Helper function to check if instructions contain HTML <li> tags
-    * Some Spoonacular recipes provide steps HTML formatting while others are plain text.
+    * Some Spoonacular recipes provide steps with HTML formatting while others are plain text.
+    * Helper function to check if instructions contain HTML <li> tags with RegEx
+    * test() is used to see if the regex is in the string
     */
     const containsHTMLTags = (str) => /<\/?li>/i.test(str);
 
@@ -103,7 +104,7 @@ const RecipeDetails = () => {
 
     return (
         <>
-            <div className="unsaved-recipe-detail-container">
+            <section className="unsaved-recipe-detail-container">
                 <h1>{recipe.title}</h1>
                 <img src={recipe.image} alt={recipe.title} />
                 <h2>Ingredients:</h2>
@@ -120,7 +121,7 @@ const RecipeDetails = () => {
                     ))}
                 </ol>
                 <button onClick={saveRecipe} aria-label="Save this recipe to your collection">Save nom</button>
-            </div>
+            </section>
         </>
     );
 };

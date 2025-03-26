@@ -33,7 +33,7 @@ const RecipeHome = () => {
 
     return (
         <>
-            <div className="recipe-container">
+            <section className="recipe-container">
                 <h2>Your Saved Noms</h2>
                 {savedRecipes.length === 0 ? (
                     <p>No noms here. Search for some noms to save here!</p>
@@ -49,7 +49,7 @@ const RecipeHome = () => {
                         ))}
                     </div>
                 )}
-            </div>
+            </section>
         </>
     );
 };

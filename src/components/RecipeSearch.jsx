@@ -60,7 +60,7 @@ const RecipeSearch = () => {
 
     return (
         <>
-            <div className='recipe-container'>
+            <section className='recipe-container'>
                 <h2>Search Recipes</h2>
                 <form onSubmit={searchRecipes}>
                     <input
@@ -86,7 +86,7 @@ const RecipeSearch = () => {
 
 
                 {recipes.length > 0 && (
-                    <div className="recipe-results">
+                    <section className="recipe-results">
                         {recipes.map((recipe, index) => (
                             //using ?? to ensure the key is not null or undefined
                             <div key={recipe.id ?? `recipe-${index}`} className="recipe-item">
@@ -96,9 +96,9 @@ const RecipeSearch = () => {
                                 </Link>
                             </div>
                         ))}
-                    </div>
+                    </section>
                 )}
-            </div>
+            </section>
         </>
     );
 };
