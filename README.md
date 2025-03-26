@@ -3,7 +3,7 @@
 
 nomDB is a resource for finding and saving recipes. Ever make a recipe and wanted to add notes, or realize the proportions aren't quite right? You can edit the recipes as needed to add your own personal touch!
 
-This project uses Firebase to handle user login, registration, and authentication. SpoonacularAPI is used to retrieve recipes and when a user would like to edit a recipe, a copy is save to Firebase. From there, a user is able to modify a recipe by adding, editing, and deleting ingredients and instructions and even adding their own notes if they wish. 
+This project uses Firebase to handle user login, registration, and authentication. SpoonacularAPI is used to retrieve recipes and when a user would like to save a recipe to their collection, a copy is saved. Recipes are saved to the user's profile utilizing Firebase. From there, a user is able to modify a recipe by adding, editing, and deleting ingredients and instructions and even adding their own notes if they wish. 
 
 ## Demo
 ![sitedemo](public/assets/images/sitedemo.gif)
