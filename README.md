@@ -1,20 +1,39 @@
 
-# nomDB 🍰
+# About nomDB 🍰
 
 nomDB is a resource for finding and saving recipes. Ever make a recipe and wanted to add notes, or realize the proportions aren't quite right? You can edit the recipes as needed to add your own personal touch!
+
+This project uses Firebase to handle user login, registration, and authentication. SpoonacularAPI is used to retrieve recipes and when a user would like to edit a recipe, a copy is save to Firebase. From there, a user is able to modify a recipe by adding, editing, and deleting ingredients and instructions and even adding their own notes if they wish. 
 
 ## Demo
 ![sitedemo](public/assets/images/sitedemo.gif)
 
 [Check it out here!](https://nom-db.netlify.app/)
 
-## Installation
 
-After downloading the project, unzip and navigate 
+## Run Locally
+
+Clone the project (or download zip of the project)
 
 ```bash
-  cd recipe-site-master
+  git clone https://github.com/nthaberl/recipe-site.git
+```
+
+Go to the project directory
+
+```bash
+  cd recipe-site
+```
+
+Install dependencies
+
+```bash
   npm install
+```
+
+Start the server
+
+```bash
   npm run dev
 ```
     
@@ -22,7 +41,7 @@ After downloading the project, unzip and navigate
 ## Creators 👋
 
 - [@nthaberl](https://www.github.com/nthaberl)
- - [@GiecelT](https://www.github/com/GiecelT)
+- [@GiecelT](https://www.github/com/GiecelT)
 
 
 ## Built With
