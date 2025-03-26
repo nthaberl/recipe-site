@@ -9,8 +9,9 @@ const RecipeDetails = () => {
 
     const { id } = useParams();
     const { currentUser } = useAuth(); // Get the logged-in user
-    const [recipe, setRecipe] = useState(null);
+    const [recipe, setRecipe] = useState(null); //for storing recipe details
 
+    // Fetch recipe details from Spoonacular API when the component mounts or ID changes
     useEffect(() => {
         fetch(`https://api.spoonacular.com/recipes/${id}/information?apiKey=5186f95df1f54789af41090471577ea4`)
             .then(response => response.json())
@@ -22,7 +23,10 @@ const RecipeDetails = () => {
         return <p>Loading recipe details...</p>;
     }
 
-    // Helper function to check if instructions from Spoonacular contain HTML <li> tags
+    /*
+    * Helper function to check if instructions contain HTML <li> tags
+    * Some Spoonacular recipes provide steps HTML formatting while others are plain text.
+    */
     const containsHTMLTags = (str) => /<\/?li>/i.test(str);
 
     // Parse instructions into an array of strings based on <li> tags
@@ -33,38 +37,49 @@ const RecipeDetails = () => {
         return Array.from(liElements).map(li => li.textContent);  // Extract text content of each <li>
     };
 
-    // Process instructions to handle both HTML tags and plain text
+    /*
+     * Process recipe instructions by handling both HTML lists and plain text.
+     * If HTML tags are detected, it extracts steps from <li> elements.
+     * Otherwise, plain text instructions are split based on sentences.
+     */
     const processInstructions = (instructions) => {
         if (containsHTMLTags(instructions)) {
             // Parse instructions based on <li> tags if present
             return parseInstructions(instructions);
         } else {
-            // Otherwise, split instructions into sentences (assuming period and space as sentence delimiters)
+            // Otherwise, split instructions where each sentence is a separate step
             return instructions.split(/(?<=\.)\s+/);
         }
     };
 
+
+    /*
+     * Saves the recipe to the user's Firestore collection.
+     * - Ensures the user is logged in before saving.
+     * - Checks if the recipe is already saved to prevent duplicates.
+     * - Parses instructions before saving.
+     */
     const saveRecipe = () => {
         if (!currentUser) {
             alert("Please log in to save recipes.");
             return;
         }
-    
+
         const savedRecipesRef = collection(db, "users", currentUser.uid, "savedRecipes");
-    
+
         // Check if the recipe is already saved
         const existingRecipeQuery = query(savedRecipesRef, where("id", "==", recipe.id));
-    
+
         getDocs(existingRecipeQuery)
             .then(querySnapshot => {
                 if (!querySnapshot.empty) {
                     alert("This recipe is already saved in your collection.");
                     return Promise.reject("Recipe already exists"); // Stop execution
                 }
-    
+
                 // Parse instructions into an array of strings before saving
                 const parsedInstructions = processInstructions(recipe.instructions || "");
-    
+
                 // Save the recipe
                 return addDoc(savedRecipesRef, {
                     id: recipe.id,
@@ -90,7 +105,7 @@ const RecipeDetails = () => {
         <>
             <div className="unsaved-recipe-detail-container">
                 <h1>{recipe.title}</h1>
-                <img src={recipe.image} alt={recipe.title}/>
+                <img src={recipe.image} alt={recipe.title} />
                 <h2>Ingredients:</h2>
                 <ul>
                     {recipe.extendedIngredients.map((ingredient) => (

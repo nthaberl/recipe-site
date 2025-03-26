@@ -7,7 +7,7 @@ import { useParams, useNavigate } from "react-router-dom";
 const SavedRecipeDetail = () => {
     const { currentUser } = useAuth();
     const { id } = useParams();
-    const recipeId = Number(id);  // {id is a string but we need it to be a number to successfully retrieve is from db}
+    const recipeId = Number(id);  // {id is a string but we need it to be a number to successfully retrieve from db}
     const [recipe, setRecipe] = useState(null);
     const [newNotes, setNewNotes] = useState("");
     const [newIngredients, setNewIngredients] = useState([]);

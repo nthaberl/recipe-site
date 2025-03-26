@@ -15,8 +15,9 @@ const RedirectIfLoggedIn = () => {
 
   useEffect(() => {
     // Only redirect if the user is logged in and they are on the home page "/"
+    //mostly used if being redirected from 404
     if (currentUser && window.location.pathname === "/") {
-      navigate("/home"); // Redirect if logged in and trying to visit the login page
+      navigate("/home"); // Redirect to dashboard if user is logged in
     }
   }, [currentUser, navigate]);
 
@@ -27,7 +28,7 @@ const App = () => {
   return (
     <AuthProvider>
       <Router>
-        {/* Check if user should be redirected */}
+        {/* Check if loggedin user should be redirected */}
         <RedirectIfLoggedIn />
         <Routes>
           <Route path="/" element={<AuthForm />} />

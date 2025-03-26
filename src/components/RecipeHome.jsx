@@ -14,12 +14,15 @@ const RecipeHome = () => {
 
         const fetchSavedRecipes = async () => {
             try {
+                //get all saved recipes for the current user from Firestore
                 const querySnapshot = await getDocs(collection(db, "users", currentUser.uid, "savedRecipes"));
+
+                //map Firestore documents to an array of recipe objects
                 const recipes = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
+                    id: doc.id, //firestore doc ID
+                    ...doc.data() //spreading the rest of the recipe data
                 }));
-                setSavedRecipes(recipes);
+                setSavedRecipes(recipes); //updating state with fetched recipes
             } catch (error) {
                 console.error("Error fetching saved recipes:", error);
             }

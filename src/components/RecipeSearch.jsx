@@ -9,19 +9,15 @@ const RecipeSearch = () => {
     // Retrieve the search history from sessionStorage
     const searchHistory = JSON.parse(sessionStorage.getItem('searchHistory')) || [];
 
-    // Load the latest search by default
-    const lastSearch = searchHistory.length > 0 ? searchHistory[searchHistory.length - 1] : { query: '', results: [] };
-
     const [query, setQuery] = useState(sessionStorage.getItem('searchTerm') || '');
     const [recipes, setRecipes] = useState(JSON.parse(sessionStorage.getItem('searchResults')) || []);
     const [error, setError] = useState(null);
-    const [searched, setSearched] = useState(sessionStorage.getItem('searched') === 'true');
+    const [searched, setSearched] = useState(sessionStorage.getItem('searched') === 'true'); //tracking if search has been made
     const [loading, setLoading] = useState(true);
-
-    // const API_KEY = process.env.API_KEY; // Use environment variable
 
     useEffect(() => {
         // Restore previous search when navigating back
+        //location.state retreieves the query and results
         const currentState = location.state;
         if (currentState?.query) {
             setQuery(currentState.query);
@@ -35,7 +31,6 @@ const RecipeSearch = () => {
         e.preventDefault();
         setError(null);
         setSearched(true);
-        // sessionStorage.setItem('searched', 'true'); // Persist search state
 
         fetch(
             `https://api.spoonacular.com/recipes/complexSearch?query=${query}&number=10&apiKey=5186f95df1f54789af41090471577ea4`
@@ -93,6 +88,7 @@ const RecipeSearch = () => {
                 {recipes.length > 0 && (
                     <div className="recipe-results">
                         {recipes.map((recipe, index) => (
+                            //using ?? to ensure the key is not null or undefined
                             <div key={recipe.id ?? `recipe-${index}`} className="recipe-item">
                                 <h3>{recipe.title}</h3>
                                 <Link to={`/search/${recipe.id}`} aria-label={`View details for ${recipe.title}`}>

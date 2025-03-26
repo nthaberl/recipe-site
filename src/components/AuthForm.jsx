@@ -6,9 +6,18 @@ const AuthForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [isLogin, setIsLogin] = useState(true); // Toggle between login/register
+    const [isLogin, setIsLogin] = useState(true); // tracks whether for is on login or register form
+    
     const { login, signup } = useAuth();
     const navigate = useNavigate();
+
+    /**
+     * Handles form submission for login and registration.
+     * - If on login form, calls login function.
+     * - If on registration form, calls signup function.
+     * - Navigates to "/home" on successful authentication.
+     * - Displays an error message if authentication fails.
+     */
 
     const handleSubmit = async (e) => {
         e.preventDefault();
