@@ -16,7 +16,7 @@ body {
   place-items: center;
   width: 100%;
   min-height: 100vh;
-  background-image: url('assets/images/background.jpg');
+  background-image: url('../public/assets/images/background.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

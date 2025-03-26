@@ -33,7 +33,7 @@ const RecipeHome = () => {
             <div className="recipe-container">
                 <h2>Your Saved Noms</h2>
                 {savedRecipes.length === 0 ? (
-                    <p>No saved recipes yet.</p>
+                    <p>No noms here. Search for some noms to save here!</p>
                 ) : (
                     <div className="recipe-list">
                         {savedRecipes.map(recipe => (

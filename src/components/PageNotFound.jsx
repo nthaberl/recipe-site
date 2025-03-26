@@ -5,9 +5,9 @@ const PageNotFound = () => {
     return (
         <div className='recipe-container'>
             <h2>No noms here ...</h2>
-            <img src="src/assets/images/404_cake.png" alt="sad cake" />
+            <img src="/assets/images/404_cake.png" alt="sad cake" />
             <p>
-                <Link to={`/home`}>Go back home</Link>
+                <Link to={`/`}>Go back home</Link>
             </p>
         </div>
     )
