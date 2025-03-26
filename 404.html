@@ -4,20 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Not Found</title>
-    <script>
-        // Only redirect if not already redirected
-        if (!window.location.search.includes("redirect=true")) {
-            window.location.replace(
-                "/" + window.location.pathname.substring(1) + "?redirect=true"
-            );
-        }
-    </script>
+    <title>Page Not Found</title>
+    <meta http-equiv="refresh" content="0;url=/recipe-site/">
 </head>
 
 <body>
-    <h1>404 - Page Not Found</h1>
-    <p>If you are not redirected, <a href="/recipe-site/">click here</a> to return to the homepage.</p>
+    <!-- this html file is included to bypass how GitHub handles 404s -->
+    <p>Redirecting...</p>
+    <script>
+        window.location.replace("/recipe-site/");
+    </script>
 </body>
 
 </html>
